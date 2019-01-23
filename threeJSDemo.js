@@ -2,8 +2,7 @@
 var cube, objectSize, mesh1, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8, camera, scene, renderer,content;
 
 //Boolean pour vérification de click sur les mini cubes.
-var clicked1 = clicked2 = clicked3 = clicked4 = clicked5 = clicked6 = clicked7 = clicked8 = buttonClick = false;
-
+clicked1 = clicked2 = clicked3 = clicked4 = clicked5 = clicked6 = clicked7 = clicked8 = buttonClick = false;
 //Les textures des mini cubes
 var colours = [0xff0000, 0xd0cfcf, 0x0071ff, 0xf48e26, 0xffa500, 0xff0088,0x2A9C3C, 0x2a8a9c];
 
@@ -12,11 +11,22 @@ function buttonClicked() {
 	
 	if(buttonClick == false) {
 		popinhide();
+		var clickedItem  = [clicked1, clicked2, clicked3, clicked4, clicked5, clicked6, clicked7, clicked8];
+		clickedItem.forEach(function(e) {
+		  if(e == true){
+		    //Réglage de position des mini cubes
+			mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+			mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+			mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+			mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+			mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+			mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+			mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+			mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
+		  }
+		});
 	}
-	else {
-	buttonClick = true;
-	popinshow();
-	}
+	
 }
 
 //Longueur d'un arret d'un mini cube
@@ -36,6 +46,8 @@ function popinshow(){
 	elt2.style.width = "58%";
 	document.body.getElementsByTagName('canvas')[0].style.width ="100%";
 	// elt1.style.display = "block";
+	var btn = document.getElementsByClassName("close-classic")[0];
+	btn.style.display = "block";
 }
 
 //Cacher le contenu d'un mini cube (popin)
@@ -50,6 +62,9 @@ function popinhide(){
 	elt2.style.width = "100%";
 	document.body.getElementsByTagName('canvas')[0].style.width ="100%";
 	// elt1.style.display = "none";
+	var btn = document.getElementsByClassName("close-classic")[0];
+	btn.style.display = "none";
+	
 }
 
 // Click handler pour Mini Cube 1 : Traitement aprés le click.
