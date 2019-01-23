@@ -5,14 +5,7 @@ var cube, objectSize, mesh1, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8, ca
 var clicked1 = clicked2 = clicked3 = clicked4 = clicked5 = clicked6 = clicked7 = clicked8 = buttonClick = false;
 
 //Les textures des mini cubes
-var texture1 = new THREE.TextureLoader().load('../integration.jpg');
-var texture2 = new THREE.TextureLoader().load('../DOTNET.jpg');
-var texture3 = new THREE.TextureLoader().load('../python.png');
-var texture4 = new THREE.TextureLoader().load('../logo1.png');
-var texture5 = new THREE.TextureLoader().load('../logo1.png');
-var texture6 = new THREE.TextureLoader().load('../logo1.png');
-var texture7 = new THREE.TextureLoader().load('../logo1.png');
-var texture8 = new THREE.TextureLoader().load('../logo1.png');
+var colours = [0xff0000, 0xd0cfcf, 0x0071ff, 0xf48e26, 0xffa500, 0xff0088,0x2A9C3C, 0x2a8a9c];
 
 //Gere le button fermer de la popin
 function buttonClicked() {
@@ -26,40 +19,82 @@ function buttonClicked() {
 	}
 }
 
+//
+function doStuffPopin(obj,boolStateChange)
+{
+    console.log('test');
+    if (boolStateChange==true)
+    {
+    obj.style.cssText = "width:50%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
+
+    }
+    else
+    {
+    obj.style.cssText = "width:0%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
+    }
+
+}
+
+//
+function doStuffcube(obj,boolStateChange)
+{
+    console.log('test');
+    if (boolStateChange==true)
+    {
+    obj.style.cssText = "width:50%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
+
+    }
+    else
+    {
+    obj.style.cssText = "width:100%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
+    }
+
+}
+
 //Longueur d'un arret d'un mini cube
-objectSize = 65;
+objectSize = 75;
 var maxRotation = 2 * Math.PI;
 
 //Affiche le contenu d'un mini cube (popin)
 function popinshow(){
 	//Element HTML (div) à traiter
-	var div1 = document.getElementById("canvasContainer");
-	var div2 = document.getElementById("popin");
-	div1.style.width = "58%";
-	div2.style.width = "42%";
-	div2.style.display = "block";
+	var elt1 = document.getElementsByClassName("popin")[0];
+	var elt2 = document.getElementsByClassName("cube")[0];
+	document.body.getElementsByTagName('canvas')[0].style.transition = "width 2.0s";
+	elt1.style.transition = "width 2.0s";
+	// elt1.style.transition = "display 2.0s";
+	elt1.style.width = "42%";
+	// elt1.style.height = "100%";
+	elt2.style.width = "58%";
 	document.body.getElementsByTagName('canvas')[0].style.width ="100%";
+	// elt1.style.display = "block";
 }
 
 //Cacher le contenu d'un mini cube (popin)
 function popinhide(){
-	document.getElementById("popin").style.width = "0%";
-	document.getElementById("canvasContainer").style.width = "100%";
+	var elt1 = document.getElementsByClassName("popin")[0];
+	var elt2 = document.getElementsByClassName("cube")[0];
+	// document.body.getElementsByTagName('canvas')[0].style.transition = "width 2.0s";	
+	// elt1.style.transition = "display 2.0s";
+	elt1.style.transition = "width 2.0s";
+	elt1.style.width = "0px";
+	// elt1.style.height = "0px";
+	elt2.style.width = "100%";
 	document.body.getElementsByTagName('canvas')[0].style.width ="100%";
-	document.getElementById("popin").style.display='none';
+	// elt1.style.display = "none";
 }
 
 // Click handler pour Mini Cube 1 : Traitement aprés le click.
 function objectClickHandler1() {
 	if(clicked1 == false) {
-		mesh1.position.set(objectSize/2+10, objectSize/2+10, -objectSize/2-10);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+		mesh1.position.set(objectSize/2+13, objectSize/2+13, -objectSize/2-13);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = true;
 		clicked2 = false;
 		clicked3 = false;
@@ -77,7 +112,7 @@ function objectClickHandler1() {
 		document.getElementById("content").innerHTML = texto;
 	}
 	else {
-		mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
+		mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
 		clicked1 = false;
 		popinhide();
 	}
@@ -86,14 +121,14 @@ function objectClickHandler1() {
 // Click handler pour Mini Cube 2 : Traitement aprés le click.
 function objectClickHandler2() {
 	if(clicked2 == false) {	
-		mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2-10, objectSize/2+10, -objectSize/2-10);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);		
+		mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-13, objectSize/2+13, -objectSize/2-13);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = true;
 		clicked3 = false;
@@ -110,7 +145,7 @@ function objectClickHandler2() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
 		clicked2 = false;
 		popinhide();
 	}
@@ -119,14 +154,14 @@ function objectClickHandler2() {
 // Click handler pour Mini Cube 3 : Traitement aprés le click.
 function objectClickHandler3() {
 	if(clicked3 == false) {
-		mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2+10, -objectSize/2-10, objectSize/2+10);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+		mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+13, -objectSize/2-13, objectSize/2+13);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = true;
@@ -143,7 +178,7 @@ function objectClickHandler3() {
 		document.getElementById("content").innerHTML = content;
     }
 	else{
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
 		clicked3 = false;
 		popinhide();
 	}
@@ -152,14 +187,14 @@ function objectClickHandler3() {
 // Click handler pour Mini Cube 4 : Traitement aprés le click.
 function objectClickHandler4() {
 	if(clicked4 == false) {
-        mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2-10, -objectSize/2-10, objectSize/2+10);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+        mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-13, -objectSize/2-13, objectSize/2+13);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = false;
@@ -176,7 +211,7 @@ function objectClickHandler4() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
 		clicked4 = false;
 		popinhide();
 	}
@@ -185,14 +220,14 @@ function objectClickHandler4() {
 // Click handler pour Mini Cube 5 : Traitement aprés le click.
 function objectClickHandler5() {
 	if(clicked5 == false) {
-        mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
+        mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
 		mesh5.position.set(objectSize/2+10, -objectSize/2-10, -objectSize/2-10);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = false;
@@ -209,7 +244,7 @@ function objectClickHandler5() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
 		clicked5 = false;
 		popinhide();
 	}
@@ -218,14 +253,14 @@ function objectClickHandler5() {
 // Click handler pour Mini Cube 6 : Traitement aprés le click.
 function objectClickHandler6() {
 	if(clicked6 == false) {
-        mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2-10, -objectSize/2-10, -objectSize/2-10);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+        mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-13, -objectSize/2-13, -objectSize/2-13);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = false;
@@ -242,7 +277,7 @@ function objectClickHandler6() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
 		clicked6 = false;
 		popinhide();
 	}
@@ -251,14 +286,14 @@ function objectClickHandler6() {
 // Click handler pour Mini Cube 7 : Traitement aprés le click.
 function objectClickHandler7() {
 	if(clicked7 == false) {
-        mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2+10, objectSize/2+10, objectSize/2+10);
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+        mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+13, objectSize/2+13, objectSize/2+13);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = false;
@@ -275,7 +310,7 @@ function objectClickHandler7() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
 		clicked7 = false;
 		popinhide();
 	}
@@ -284,14 +319,14 @@ function objectClickHandler7() {
 // Click handler pour Mini Cube 8 : Traitement aprés le click.
 function objectClickHandler8() {
 	if(clicked8 == false) {
-        mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-		mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-		mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-		mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-		mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-		mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-		mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-		mesh8.position.set(-objectSize/2-10, objectSize/2+10, objectSize/2+10);
+        mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+		mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+		mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+		mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+		mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+		mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+		mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+		mesh8.position.set(-objectSize/2-13, objectSize/2+13, objectSize/2+13);
 		clicked1 = false;
 		clicked2 = false;
 		clicked3 = false;
@@ -308,7 +343,7 @@ function objectClickHandler8() {
 		document.getElementById("content").innerHTML = content;
     }
 	else {
-		mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+		mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 		clicked8 = false;
 		popinhide();
 	}
@@ -324,17 +359,21 @@ function onWindowResize() {
 
 //Permet de Creer un matérial
 function CreateMaterial(texture, color) {
+	
+        // faceMaterials = colours.map(function(c) {
+        // return new THREE.MeshLambertMaterial({ color: c , ambient: c });
+        // }),
+        // cubeMaterials = new THREE.MeshFaceMaterial(faceMaterials);
+	
 	return new THREE.MeshBasicMaterial({
 		map : texture,
-		color : color,
-		shininess: 50,
-	    shading: THREE.SmoothShading
+		color : color
 	});
 }
 
 //Creer BoxGeometry
 function createBoxGeometry(){
-	return new THREE.BoxGeometry(objectSize, objectSize, objectSize);
+	return new THREE.BoxGeometry(objectSize, objectSize, objectSize, 10, 10, 10);
 }
 
 //Creer Mesh
@@ -343,6 +382,16 @@ function createMesh(geometry, material) {
 	mesh.castShadow = true;
 	mesh.receiveShadow = true;
 	return mesh;
+}
+
+//Permet la creation des texture
+function createTexture(txt){
+	var dynamicTexture	= new THREEx.DynamicTexture(512, 512);
+	dynamicTexture.context.font	= "bolder 55px Verdana";
+	// dynamicTexture.canvas.color = "0x0071ff";
+	dynamicTexture.texture.anisotropy = renderer.getMaxAnisotropy();
+	dynamicTexture.clear('white').drawText(txt, undefined, 256, 'black');
+	return dynamicTexture;
 }
 	
 //Fonction initiale
@@ -355,7 +404,7 @@ function init() {
     camera.position.z = 250;
 	camera.position.y = 150;
 	camera.position.x = 150;
-	camera.lookAt(new THREE.Vector3(0,0,0));
+	camera.lookAt(new THREE.Vector3(0,0,1));
 	
 	//Ajouter le renderer
 	renderer = new THREE.WebGLRenderer({
@@ -363,23 +412,49 @@ function init() {
         });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.shadowMapType = THREE.PCFSoftShadowMap;
-	// renderer.setClearColor( this.scene.fog.color1 );
+	renderer.setClearColor( 0xe3e1de );
 	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 	renderer.shadowMap.renderReverseSided = true;
+	
+	//Create a PointLight and turn on shadows for the light
+	var ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+	scene.add(ambientLight);
+	var light = new THREE.PointLight( 0xffffff, 0.8, 18 );
+	light.position.set( 0, 10, 0);
+	light.castShadow = true;            // default false
+	scene.add( light );
+	
+	//Set up shadow properties for the light
+	light.shadow.mapSize.width = 512;  // default
+	light.shadow.mapSize.height = 512; // default
+	light.shadow.camera.near = 0.5;       // default
+	light.shadow.camera.far = 2      // default
     
 	//Controller
 	var orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
 	
+	//Texture
+	dynamicTexture1 = createTexture("Integration");
+	dynamicTexture2 = createTexture("Web");
+	dynamicTexture3 = createTexture("Big Data");
+	dynamicTexture4 = createTexture("DevOps");
+	dynamicTexture5 = createTexture("Langage");
+	dynamicTexture6 = createTexture("Database");
+	dynamicTexture7 = createTexture("Message Broker");
+	dynamicTexture8 = createTexture("TTest");
+	
 	//Création des matérial pour les mini cubes
-	var material1 = CreateMaterial(texture1,0xcc2900);
-	var material2 = CreateMaterial(texture2,0xcc2900);
-	var material3 = CreateMaterial(texture3,0xffff4d);
-	var material4 = CreateMaterial(texture4,0xbf8040);
-	var material5 = CreateMaterial(texture5,0x333399);
-	var material6 = CreateMaterial(texture6,0x33cc33);
-	var material7 = CreateMaterial(texture7,0x3399ff);
-	var material8 = CreateMaterial(texture8,0xff9900);
+	var material1 = CreateMaterial(dynamicTexture1.texture, colours[0]);
+	var material2 = CreateMaterial(dynamicTexture2.texture, colours[1]);
+	var material3 = CreateMaterial(dynamicTexture3.texture, colours[2]);
+	var material4 = CreateMaterial(dynamicTexture4.texture, colours[3]);
+	var material5 = CreateMaterial(dynamicTexture5.texture, colours[4]);
+	var material6 = CreateMaterial(dynamicTexture6.texture, colours[5]);
+	var material7 = CreateMaterial(dynamicTexture7.texture, colours[6]);
+	var material8 = CreateMaterial(dynamicTexture8.texture, colours[7]);
+	
+	// var materials = [material1, material2, material3, material4, material5, material6];
 	
     // Création des geometries
     var boxGeometry1 = createBoxGeometry();
@@ -401,15 +476,16 @@ function init() {
     mesh7 = createMesh(boxGeometry7, material7);
     mesh8 = createMesh(boxGeometry8, material8);
 	
+	
 	//Réglage de position des mini cubes
-    mesh1.position.set(objectSize/2, objectSize/2, -objectSize/2);
-	mesh2.position.set(-objectSize/2, objectSize/2, -objectSize/2);
-	mesh3.position.set(objectSize/2, -objectSize/2, objectSize/2);
-	mesh4.position.set(-objectSize/2, -objectSize/2, objectSize/2);
-	mesh5.position.set(objectSize/2, -objectSize/2, -objectSize/2);
-	mesh6.position.set(-objectSize/2, -objectSize/2, -objectSize/2);
-	mesh7.position.set(objectSize/2, objectSize/2, objectSize/2);
-	mesh8.position.set(-objectSize/2, objectSize/2, objectSize/2);
+    mesh1.position.set(objectSize/2+3, objectSize/2+3, -objectSize/2-3);
+	mesh2.position.set(-objectSize/2-3, objectSize/2+3, -objectSize/2-3);
+	mesh3.position.set(objectSize/2+3, -objectSize/2-3, objectSize/2+3);
+	mesh4.position.set(-objectSize/2-3, -objectSize/2-3, objectSize/2+3);
+	mesh5.position.set(objectSize/2+3, -objectSize/2-3, -objectSize/2-3);
+	mesh6.position.set(-objectSize/2-3, -objectSize/2-3, -objectSize/2-3);
+	mesh7.position.set(objectSize/2+3, objectSize/2+3, objectSize/2+3);
+	mesh8.position.set(-objectSize/2-3, objectSize/2+3, objectSize/2+3);
 	
 	//ClickHandler des mini cubes
 	mesh1.callback = objectClickHandler1;
@@ -432,6 +508,38 @@ function init() {
 	cube.add(mesh7);
 	cube.add(mesh8);
 	
+	//Shadow
+	mesh1.castShadow = true; //default is false
+	mesh1.receiveShadow = true; //default
+	
+	mesh2.castShadow = true; //default is false
+	mesh2.receiveShadow = true; //default
+	
+	mesh3.castShadow = true; //default is false
+	mesh3.receiveShadow = true; //default
+	
+	mesh4.castShadow = true; //default is false
+	mesh4.receiveShadow = true; //default
+	
+	mesh5.castShadow = true; //default is false
+	mesh5.receiveShadow = true; //default
+	
+	mesh6.castShadow = true; //default is false
+	mesh6.receiveShadow = true; //default
+	
+	mesh7.castShadow = true; //default is false
+	mesh7.receiveShadow = true; //default
+	
+	mesh8.castShadow = true; //default is false
+	mesh8.receiveShadow = true; //default
+	
+	cube.castShadow = true;
+	mesh8.receiveShadow = true;
+	
+	//Create a helper for the shadow camera (optional)
+	var helper = new THREE.CameraHelper( light.shadow.camera );
+	// scene.add(	helper);
+	
 	//Ajouter les elements à la scene
 	scene.add(camera);
 	scene.add(cube);
@@ -452,16 +560,6 @@ function init() {
     window.addEventListener('resize', onWindowResize, false);
 }
 
-//Permet l'animation du cube
-function animate() {
-    resizeCanvasToDisplaySize();
-    renderer.render(scene, camera);
-	requestAnimationFrame(animate);
-	cube.rotation.y = (cube.rotation.y + 0.005) % maxRotation;
-}
-
-requestAnimationFrame(animate);
-
 //Permet de parametrer les dimensions
 function resizeCanvasToDisplaySize() {
   const canvas = renderer.domElement;
@@ -473,6 +571,17 @@ function resizeCanvasToDisplaySize() {
     camera.updateProjectionMatrix();
   }
 }
+
+//Permet l'animation du cube
+function animate() {
+    renderer.render(scene, camera);
+	requestAnimationFrame(animate);
+	resizeCanvasToDisplaySize();
+	cube.rotation.y = (cube.rotation.y + 0.005) % maxRotation;
+	cube.position.set(0,0,0);
+}
+
+requestAnimationFrame(animate);
 
 //Traitement lors du chargement de page
 window.onload = function() {

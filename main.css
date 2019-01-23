@@ -1,9 +1,24 @@
-#popin{
-	display : none;
-	width : 0%;
+.popin{
+	/* display : none; */
+	/* visibility : hidden; */
+	width : 0px;
+	/* height: 0px; */
 	font-family: monospace;
 	background: #444;
 	color: white;
+	/* flex: 0; */
+	
+	/* flex-shrink:1; */
+}
+
+.cube{
+	width : 100%;
+	
+}
+
+.cont {
+	display: flex;
+	flex-shrink:0;
 }
 
 #content{
@@ -14,7 +29,7 @@
 	margin-left: 80px;
 	background-color: lightblue;
 	border-style: ridge;
-	 border-color: red;
+	border-color: grey;
 }
 
 
@@ -43,5 +58,12 @@
 canvas{
 	opacity:1;
 	background: #e6ffff;
+}
+
+#canvasContainer {
+	overflow:hidden;
+	/* transition:flex 0.3s ease-out; */
+	height:auto;
+	flex:1;
 }
 
