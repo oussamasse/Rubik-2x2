@@ -19,38 +19,6 @@ function buttonClicked() {
 	}
 }
 
-//
-function doStuffPopin(obj,boolStateChange)
-{
-    console.log('test');
-    if (boolStateChange==true)
-    {
-    obj.style.cssText = "width:50%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
-
-    }
-    else
-    {
-    obj.style.cssText = "width:0%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
-    }
-
-}
-
-//
-function doStuffcube(obj,boolStateChange)
-{
-    console.log('test');
-    if (boolStateChange==true)
-    {
-    obj.style.cssText = "width:50%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
-
-    }
-    else
-    {
-    obj.style.cssText = "width:100%;transition:width 2s;-moz-transition:width 2s;-webkit-transition:width 2s;";
-    }
-
-}
-
 //Longueur d'un arret d'un mini cube
 objectSize = 75;
 var maxRotation = 2 * Math.PI;
