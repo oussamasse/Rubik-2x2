@@ -43,6 +43,10 @@
   top: 5px;
 }
 
+.close-classic {
+	display:none;
+}
+
 .close-classic:after {
   content: 'X'; /* ANSI X letter */
 }

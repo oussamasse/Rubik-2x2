@@ -340,20 +340,6 @@ function onWindowResize() {
 	document.body.getElementsByTagName('canvas')[0].style.width ="100%";
 }
 
-//Permet de Creer un matérial
-function CreateMaterial(texture, color) {
-	
-        // faceMaterials = colours.map(function(c) {
-        // return new THREE.MeshLambertMaterial({ color: c , ambient: c });
-        // }),
-        // cubeMaterials = new THREE.MeshFaceMaterial(faceMaterials);
-	
-	return new THREE.MeshBasicMaterial({
-		map : texture,
-		color : color
-	});
-}
-
 //Creer BoxGeometry
 function createBoxGeometry(){
 	return new THREE.BoxGeometry(objectSize, objectSize, objectSize, 10, 10, 10);
@@ -372,7 +358,7 @@ function createTexture(txt){
 	var dynamicTexture	= new THREEx.DynamicTexture(512, 512);
 	dynamicTexture.context.font	= "bolder 55px Verdana";
 	// dynamicTexture.canvas.color = "0x0071ff";
-	dynamicTexture.texture.anisotropy = renderer.getMaxAnisotropy();
+	dynamicTexture.texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 	dynamicTexture.clear('white').drawText(txt, undefined, 256, 'black');
 	return dynamicTexture;
 }
@@ -387,7 +373,7 @@ function init() {
     camera.position.z = 250;
 	camera.position.y = 150;
 	camera.position.x = 150;
-	camera.lookAt(new THREE.Vector3(0,0,1));
+	camera.lookAt(scene.position);
 	
 	//Ajouter le renderer
 	renderer = new THREE.WebGLRenderer({
@@ -395,24 +381,24 @@ function init() {
         });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.setClearColor( 0xe3e1de );
+	renderer.setClearColor( 0xffffff);
 	renderer.shadowMap.enabled = true;
-	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-	renderer.shadowMap.renderReverseSided = true;
+	renderer.shadowMap.type = THREE.BasicShadowMap;
+	// renderer.shadowMap.renderReverseSided = true;
 	
 	//Create a PointLight and turn on shadows for the light
-	var ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+	// LIGHTS
+	ambientLight = new THREE.AmbientLight(0xffffff, 1);
+	// ambientLight.position.set(150,150,150);
 	scene.add(ambientLight);
-	var light = new THREE.PointLight( 0xffffff, 0.8, 18 );
-	light.position.set( 0, 10, 0);
-	light.castShadow = true;            // default false
-	scene.add( light );
 	
-	//Set up shadow properties for the light
-	light.shadow.mapSize.width = 512;  // default
-	light.shadow.mapSize.height = 512; // default
-	light.shadow.camera.near = 0.5;       // default
-	light.shadow.camera.far = 2      // default
+	light1 = new THREE.PointLight(0xffffff, 0.8, 18);
+	light1.position.set(0,0,0);
+	light1.castShadow = true;
+	// Will not light anything closer than 0.1 units or further than 25 units
+	light1.shadow.camera.near = camera.near;
+	light1.shadow.camera.far = camera.far;
+	scene.add(light1);
     
 	//Controller
 	var orbitControl = new THREE.OrbitControls(camera, renderer.domElement);
@@ -427,17 +413,70 @@ function init() {
 	dynamicTexture7 = createTexture("Message Broker");
 	dynamicTexture8 = createTexture("TTest");
 	
-	//Création des matérial pour les mini cubes
-	var material1 = CreateMaterial(dynamicTexture1.texture, colours[0]);
-	var material2 = CreateMaterial(dynamicTexture2.texture, colours[1]);
-	var material3 = CreateMaterial(dynamicTexture3.texture, colours[2]);
-	var material4 = CreateMaterial(dynamicTexture4.texture, colours[3]);
-	var material5 = CreateMaterial(dynamicTexture5.texture, colours[4]);
-	var material6 = CreateMaterial(dynamicTexture6.texture, colours[5]);
-	var material7 = CreateMaterial(dynamicTexture7.texture, colours[6]);
-	var material8 = CreateMaterial(dynamicTexture8.texture, colours[7]);
+	//Creation des materials pour chaques faces de cube
+	var cube1Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture1.texture, color : colours[0], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture1.texture, color : colours[0], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[0], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[0], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture1.texture, color : colours[0], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture1.texture, color : colours[0], side: THREE.DoubleSide})];
 	
-	// var materials = [material1, material2, material3, material4, material5, material6];
+	var cube2Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture2.texture, color : colours[1], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture2.texture, color : colours[1], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[1], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[1], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture2.texture, color : colours[1], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture2.texture, color : colours[1], side: THREE.DoubleSide})];
+	
+	var cube3Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture3.texture, color : colours[2], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture3.texture, color : colours[2], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[2], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[2], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture3.texture, color : colours[2], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture3.texture, color : colours[2], side: THREE.DoubleSide})];
+	
+	var cube4Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture4.texture, color : colours[3], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture4.texture, color : colours[3], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[3], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[3], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture4.texture, color : colours[3], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture4.texture, color : colours[3], side: THREE.DoubleSide})];
+	
+	var cube5Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture5.texture, color : colours[4], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture5.texture, color : colours[4], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[4], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[4], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture5.texture, color : colours[4], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture5.texture, color : colours[4], side: THREE.DoubleSide})];
+	
+	var cube6Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture6.texture, color : colours[5], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture6.texture, color : colours[5], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[5], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[5], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture6.texture, color : colours[5], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture6.texture, color : colours[5], side: THREE.DoubleSide})];
+	
+	var cube7Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture7.texture, color : colours[6], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture7.texture, color : colours[6], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[6], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[6], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture7.texture, color : colours[6], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture7.texture, color : colours[6], side: THREE.DoubleSide})];
+	
+	var cube8Materials = [
+	new THREE.MeshPhongMaterial({map : dynamicTexture8.texture, color : colours[7], side: THREE.DoubleSide}),
+	new THREE.MeshPhongMaterial({map : dynamicTexture8.texture, color : colours[7], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[7], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({color : colours[7], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture8.texture, color : colours[7], side: THREE.DoubleSide}), //null texture
+	new THREE.MeshPhongMaterial({map : dynamicTexture8.texture, color : colours[7], side: THREE.DoubleSide})];
 	
     // Création des geometries
     var boxGeometry1 = createBoxGeometry();
@@ -450,14 +489,14 @@ function init() {
     var boxGeometry8 = createBoxGeometry();
 	
 	//Création des mini cubes
-    mesh1 = createMesh(boxGeometry1, material1);
-    mesh2 = createMesh(boxGeometry2, material2);
-    mesh3 = createMesh(boxGeometry3, material3);
-    mesh4 = createMesh(boxGeometry4, material4);
-    mesh5 = createMesh(boxGeometry5, material5);
-    mesh6 = createMesh(boxGeometry6, material6);
-    mesh7 = createMesh(boxGeometry7, material7);
-    mesh8 = createMesh(boxGeometry8, material8);
+    mesh1 = createMesh(boxGeometry1, cube1Materials);
+    mesh2 = createMesh(boxGeometry2, cube2Materials);
+    mesh3 = createMesh(boxGeometry3, cube3Materials);
+    mesh4 = createMesh(boxGeometry4, cube4Materials);
+    mesh5 = createMesh(boxGeometry5, cube5Materials);
+    mesh6 = createMesh(boxGeometry6, cube6Materials);
+    mesh7 = createMesh(boxGeometry7, cube7Materials);
+    mesh8 = createMesh(boxGeometry8, cube8Materials);
 	
 	
 	//Réglage de position des mini cubes
@@ -490,41 +529,15 @@ function init() {
 	cube.add(mesh6);
 	cube.add(mesh7);
 	cube.add(mesh8);
-	
-	//Shadow
-	mesh1.castShadow = true; //default is false
-	mesh1.receiveShadow = true; //default
-	
-	mesh2.castShadow = true; //default is false
-	mesh2.receiveShadow = true; //default
-	
-	mesh3.castShadow = true; //default is false
-	mesh3.receiveShadow = true; //default
-	
-	mesh4.castShadow = true; //default is false
-	mesh4.receiveShadow = true; //default
-	
-	mesh5.castShadow = true; //default is false
-	mesh5.receiveShadow = true; //default
-	
-	mesh6.castShadow = true; //default is false
-	mesh6.receiveShadow = true; //default
-	
-	mesh7.castShadow = true; //default is false
-	mesh7.receiveShadow = true; //default
-	
-	mesh8.castShadow = true; //default is false
-	mesh8.receiveShadow = true; //default
-	
+
 	cube.castShadow = true;
-	mesh8.receiveShadow = true;
+	cube.receiveShadow = true;
 	
 	//Create a helper for the shadow camera (optional)
-	var helper = new THREE.CameraHelper( light.shadow.camera );
+	// var helper = new THREE.CameraHelper( light.shadow.camera );
 	// scene.add(	helper);
 	
 	//Ajouter les elements à la scene
-	scene.add(camera);
 	scene.add(cube);
     
     //Element HTML concerné
